@@ -9,6 +9,7 @@ description: Generate Git commit messages from staged changes using a convention
 
 - Run `git diff --cached` to review what will be committed.
 - If nothing is staged, stage files explicitly (do not use `git add -u` or `git add -A`).
+  - Prefer `git add path/to/file` (repeat per file).
 
 ## Write the message
 
@@ -32,3 +33,4 @@ EOF
 
 - Match the message to `git diff --cached` only.
 - Keep the subject specific; explain rationale/impact in the body.
+- If you need examples, see `references/examples.md`.
