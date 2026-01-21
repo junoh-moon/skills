@@ -3,7 +3,7 @@ name: commit-message
 description: Generate Git commit messages from staged changes using a conventional commit subject (English, <= 72 chars) and a Korean body (wrapped at 72 chars). Use when asked to write, suggest, or refine a git commit message.
 ---
 
-## Commit Message Convention
+# Commit Message Convention
 
 Based on the following git diff of staged changes, generate a conventional commit message with a clear subject line (max 72 chars) and body (wrapped at 72 chars).
 The message should clearly explain what changed and why.
