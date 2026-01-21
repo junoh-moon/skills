@@ -1,7 +1,6 @@
 ---
 name: gemini
 description: Interact with Google's Gemini model via CLI. Use when needing a second opinion from another LLM, cross-validation, or leveraging Gemini's Google Search grounding. Supports multi-turn conversations with session management.
-allowed-tools: Bash(gemini:*), Bash(jq:*)
 ---
 
 # Gemini CLI
