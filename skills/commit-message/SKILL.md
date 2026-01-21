@@ -3,39 +3,15 @@ name: commit-message
 description: Generate Git commit messages from staged changes using a conventional commit subject (English, <= 72 chars) and a Korean body (wrapped at 72 chars). Use when asked to write, suggest, or refine a git commit message.
 ---
 
-# Commit Message Convention
+## Commit Message Convention
 
-Based on the following git diff of staged changes, generate a conventional
-commit message with a clear subject line (max 72 chars) and body (wrapped at 72
-chars). The message should clearly explain what changed and why.
+Based on the following git diff of staged changes, generate a conventional commit message with a clear subject line (max 72 chars) and body (wrapped at 72 chars).
+The message should clearly explain what changed and why.
+To create a commit message, focus on staged files ONLY. Run `git diff --cached` to see the changes.
+Sometimes, you have to `git add` files by yourself -- pre-commit fail, unstaged files, or manual edit by a user. In this case, NEVER USE `git add -u` or `git add -A`; instead, add each file.
 
-## Use staged changes only
-
-- Run `git diff --cached` to review what will be committed.
-- Focus on staged files only.
-- If you need to stage files, do not use `git add -u` or `git add -A`.
-  - Stage each file explicitly: `git add path/to/file` (repeat per file).
-
-## Write the message
-
-- Output the commit message as plain text (no markdown).
-- Write the first line as a conventional commit subject in English (max 72 chars): `feat: ...`, `fix: ...`, `docs: ...`, etc. (scope is optional).
-- Leave an empty line after the subject.
-- Write the body in Korean, wrapped at 72 chars, explaining what changed and why.
-
-## Commit command template
-
-```bash
-git commit -m "$(cat <<'EOF'
-type(scope): subject
-
-변경 내용과 이유를 72자 폭으로 줄바꿈해 작성합니다.
-EOF
-)"
-```
-
-## Final checks
-
-- Match the message to `git diff --cached` only.
-- Keep the subject specific; explain rationale/impact in the body.
-- If you need examples, see `references/examples.md`.
+Format the commit message as plain text (no markdown):
+- First line: conventional commit format (feat:, fix:, docs:, etc.) under 72 chars in English
+- Empty line
+- Body: wrapped at 72 chars, explaining what and why in Korean
+- Use heredoc syntax for multi-line commit messages to preserve formatting
