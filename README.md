@@ -7,6 +7,7 @@ Agent skills for Claude Code and other AI coding assistants.
 | Skill | Description |
 |-------|-------------|
 | [gemini](./skills/gemini) | Interact with Google's Gemini model via CLI for multi-turn conversations |
+| [commit-message](./skills/commit-message) | Generate conventional commit messages from staged changes |
 
 ## Installation
 
