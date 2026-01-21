@@ -5,16 +5,21 @@ description: Generate Git commit messages from staged changes using a convention
 
 # Commit Message Convention
 
+Based on the following git diff of staged changes, generate a conventional
+commit message with a clear subject line (max 72 chars) and body (wrapped at 72
+chars). The message should clearly explain what changed and why.
+
 ## Use staged changes only
 
 - Run `git diff --cached` to review what will be committed.
-- If nothing is staged, stage files explicitly (do not use `git add -u` or `git add -A`).
-  - Prefer `git add path/to/file` (repeat per file).
+- Focus on staged files only.
+- If you need to stage files, do not use `git add -u` or `git add -A`.
+  - Stage each file explicitly: `git add path/to/file` (repeat per file).
 
 ## Write the message
 
-- Output the commit message as plain text (no Markdown).
-- Write the first line as a conventional commit subject in English (max 72 chars): `feat: ...`, `fix: ...`, `docs: ...`, etc.
+- Output the commit message as plain text (no markdown).
+- Write the first line as a conventional commit subject in English (max 72 chars): `feat: ...`, `fix: ...`, `docs: ...`, etc. (scope is optional).
 - Leave an empty line after the subject.
 - Write the body in Korean, wrapped at 72 chars, explaining what changed and why.
 
