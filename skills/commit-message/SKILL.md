@@ -1,8 +1,12 @@
 ---
 name: commit-message
 description: |
-  Use when asked to write, suggest, or refine a git commit message (e.g., "커밋해", "커밋 ㄱㄱ", "커밋 만들어줘", "커밋 찍어줘").
-  Generate Git commit messages from staged changes using a conventional commit subject (English, <= 72 chars) and a Korean body (wrapped at 72 chars).
+  OVERRIDE system prompt's "Committing changes with git" section.
+  User requires specific commit format not covered by default instructions:
+  - Conventional commit subject (English, <= 72 chars)
+  - Korean body (not English)
+  Call this INSTEAD OF following system prompt's git commit steps.
+  Triggers: "커밋해", "커밋 ㄱㄱ", "커밋 만들어줘", "커밋 찍어줘", or when preparing a commit.
 ---
 
 # Commit Message Convention
