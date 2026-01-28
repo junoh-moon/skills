@@ -1,6 +1,8 @@
 ---
 name: commit-message
-description: Generate Git commit messages from staged changes using a conventional commit subject (English, <= 72 chars) and a Korean body (wrapped at 72 chars). Use when asked to write, suggest, or refine a git commit message.
+description: |
+  Use when asked to write, suggest, or refine a git commit message (e.g., "커밋해", "커밋 ㄱㄱ", "커밋 만들어줘", "커밋 찍어줘").
+  Generate Git commit messages from staged changes using a conventional commit subject (English, <= 72 chars) and a Korean body (wrapped at 72 chars).
 ---
 
 # Commit Message Convention

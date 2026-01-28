@@ -1,8 +1,8 @@
 ---
 name: pull-request
 description: |
-  Create or update GitHub pull requests with theme-based commit grouping and Korean body.
   Use when user asks to create, update, or draft a pull request or PR (e.g., "PR 만들어줘", "풀리퀘스트 생성해줘", "create a pull request").
+  Create or update GitHub pull requests with theme-based commit grouping and Korean body.
   Automatically handles branch push, commit analysis, and gh CLI operations.
   For bucketplace organization repos, adds PR-by-AI label.
 ---
@@ -38,8 +38,6 @@ gh pr create --title "<English title>" --body "$(cat <<'EOF'
 
 ## 영향 범위
 [What systems/features are affected]
-
-🤖 Generated with [Claude Code](https://claude.com/claude-code)
 EOF
 )"
 ```
