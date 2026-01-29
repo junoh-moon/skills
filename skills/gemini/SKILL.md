@@ -7,70 +7,70 @@ description: Interact with Google's Gemini model via CLI. Use when needing a sec
 
 ## Commands
 
-### New conversation (ask)
+Use the wrapper script for streamlined interaction:
 
 ```bash
-gemini --model auto --approval-mode yolo "your prompt here" --output-format json 2>/dev/null
+# New conversation
+~/.agents/skills/gemini/gemini-chat.sh "your prompt here"
+
+# Continue conversation (session_id from previous output)
+~/.agents/skills/gemini/gemini-chat.sh --resume <session_id> "follow-up prompt"
 ```
 
-Response includes `session_id` for follow-up:
-```json
-{
-  "session_id": "uuid-here",
-  "response": "...",
-  "stats": {...}
-}
-```
-
-### Continue conversation (reply)
-
-```bash
-gemini --model auto --approval-mode yolo --resume <session_id> -p "follow-up prompt" --output-format json 2>/dev/null
-```
-
-Context from previous turns is preserved.
+The script:
+- Streams output in real-time (no more waiting blindly)
+- Shows retry/error info (429 등)
+- Saves raw response to tmpfile for debugging
+- Extracts session_id automatically
 
 ## Examples
 
 ```bash
 # Ask Gemini for code review
-result=$(gemini --model auto --approval-mode yolo "Review this function for potential bugs: $(cat src/utils.ts)" --output-format json 2>/dev/null)
-session_id=$(echo "$result" | jq -r '.session_id')
-echo "$result" | jq -r '.response'
+~/.agents/skills/gemini/gemini-chat.sh "Review this function for potential bugs: $(cat src/utils.ts)"
 
-# Follow up on the same session (using session_id from above)
-result=$(gemini --model auto --approval-mode yolo --resume "$session_id" -p "How would you refactor it?" --output-format json 2>/dev/null)
-session_id=$(echo "$result" | jq -r '.session_id')
-echo "$result" | jq -r '.response'
+# Follow up (use session_id from previous output)
+~/.agents/skills/gemini/gemini-chat.sh --resume abc-123 "How would you refactor it?"
 
 # Leverage Google Search grounding
-result=$(gemini --model auto --approval-mode yolo "What are the latest changes in TypeScript 5.8?" --output-format json 2>/dev/null)
-echo "$result" | jq -r '.response'
+~/.agents/skills/gemini/gemini-chat.sh "What are the latest changes in TypeScript 5.8?"
 ```
 
-## ⚠️ CRITICAL: Session ID Handling
+## Raw CLI Usage (if needed)
 
-**If you don't parse `session_id`, you CANNOT continue the conversation!**
-
-For every response, you MUST:
-1. Extract `session_id` from the JSON response
-2. Use `--resume <session_id>` for follow-up questions
-
-❌ WRONG:
 ```bash
-gemini "prompt" --output-format json 2>/dev/null | jq -r '.response'
-# session_id lost → cannot continue conversation
+tmpfile=$(mktemp)
+echo "Response saved to: $tmpfile"
+gemini --model auto-gemini-3 --approval-mode yolo "prompt" --output-format stream-json | tee "$tmpfile"
+session_id=$(jq -rs 'last | .session_id' "$tmpfile")
 ```
 
-✅ CORRECT:
+## Model Selection
+
+Available `--model` options:
+
+| Value | Description |
+|-------|-------------|
+| `auto-gemini-3` | **기본값**. gemini-3-pro, gemini-3-flash 중 자동 선택 |
+| `auto-gemini-2.5` | gemini-2.5-pro, gemini-2.5-flash 중 자동 선택 |
+| `gemini-2.5-flash` | 직접 지정 (가장 안정적) |
+| `gemini-2.5-pro` | 직접 지정 |
+
+### Quota Exhausted (429 에러) 대처
+
+Gemini 3 quota 초과 시 (429, `MODEL_CAPACITY_EXHAUSTED`, `RESOURCE_EXHAUSTED`):
+
 ```bash
-result=$(gemini --model auto --approval-mode yolo "prompt" --output-format json 2>/dev/null)
-session_id=$(echo "$result" | jq -r '.session_id')
-response=$(echo "$result" | jq -r '.response')
-# session_id preserved for follow-up
+# auto-gemini-2.5로 fallback (2.5-pro 또는 2.5-flash 자동 선택)
+~/.agents/skills/gemini/gemini-chat.sh --model auto-gemini-2.5 "your prompt"
 ```
+
+**Fallback 순서:**
+1. `auto-gemini-3` (기본) → Gemini 3 계열 사용
+2. `auto-gemini-2.5` (fallback) → Gemini 2.5-pro/flash 중 자동 선택
 
 ## Notes
 
 - Gemini automatically uses `google_web_search` when needed
 - Image analysis: include file path in prompt, Gemini reads via `read_file`
+- Raw response file remains after execution for debugging
