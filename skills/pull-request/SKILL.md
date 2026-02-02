@@ -28,8 +28,12 @@ Focus on why these changes were needed, not just what was changed. If the busine
 
 Use the `gh` command with English subject line and Korean body.
 
+**Title format**:
+- If a Jira ticket exists in the context (e.g., COREPL-1234), prefix the title with `[TICKET-ID]`
+- Example: `[COREPL-1234] feat(apps-api): add application type list API`
+
 ```bash
-gh pr create --title "<English title>" --body "$(cat <<'EOF'
+gh pr create --title "[TICKET-ID] <English title>" --body "$(cat <<'EOF'
 ## 개요
 [Brief description that naturally explains why this change was needed and what problem it solves]
 
@@ -74,5 +78,5 @@ EOF
 - Technical details should support the "why", not dominate the explanation
 - When creating or editing a Github pull request (PR), write body in Korean and omit the "Test plan" section
 - Do not just list a series of commit messages in a PR body; instead, group commits by context
-- When you create a PR request on `bucketplace` organization, add `PR-by-AI` label. If the label doesn't exist, create it first and retry.
+- When you create a PR on `bucketplace` organization, include `--label PR-by-AI` in the `gh pr create` command. Create the label with `gh label create PR-by-AI` if and only if the PR creation fails due to missing label, then retry.
 - Return the PR URL when done, so the user can see it
